@@ -95,6 +95,8 @@ def results(user_id):
         current_user.save_to_db()
         return render_template('battle_winner.html', loser=post[0].user_id, winner=post_2[0].user_id)
     else:
+        current_user.losses += 1
+        current_user.save_to_db()
         return render_template('battle_winner.html', winner=post[0].user_id, loser=post_2[0].user_id)
     
 

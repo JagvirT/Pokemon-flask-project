@@ -72,8 +72,9 @@ def signup():
             email = form.email.data
             password= form.password.data
             wins= 0
+            losses = 0
 
-            user = User(first_name, last_name, email, password, wins)
+            user = User(first_name, last_name, email, password, wins, losses)
 
             user.save_to_db()
             return redirect(url_for('auth.login'))
