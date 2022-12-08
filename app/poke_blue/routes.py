@@ -74,17 +74,59 @@ def attack_user(user_id):
 
     # return redirect(url_for('poke_blue.view_posts'))
 
-@poke_blue.route("/attack/<int:user_id>/battle")
+@poke_blue.route("/attack/<int:user_id>/results")
 @login_required
 def results(user_id):
-    user = User.query.get(user_id)
-    post= Post.query.filter_by(user_id = user_id)
-    post_2 = Post.query.filter_by(user_id = current_user)
-
-    if user and sum(post.defense_base_stat) < sum(post_2.attack_base_stat):
-        return render_template('battle_winner.html', post=post, post_2=post_2)
+    post= Post.query.filter_by(user_id = user_id).all()
+    post_2 = Post.query.filter_by(user_id = current_user.id).all()
+    print(post, post_2)
+    post_attack= 0
+    post_defense= 0
+    post_2_attack = 0
+    post_2_defense = 0
+    for poke in post:
+        post_attack += poke.attack_base_stat
+        post_defense += poke.defense_base_stat
+    for poke_2 in post_2:
+        post_2_attack += poke_2.attack_base_stat
+        post_2_defense += poke_2.defense_base_stat
+    if (post_attack + post_defense) <= (post_2_attack + post_2_defense):
+        current_user.wins += 1
+        current_user.save_to_db()
+        return render_template('battle_winner.html', loser=post[0].user_id, winner=post_2[0].user_id)
     else:
-        return redirect(url_for('poke_blue.view_posts'))
+        return render_template('battle_winner.html', winner=post[0].user_id, loser=post_2[0].user_id)
+    
+
+        
+
+    # if sum(post.defense_base_stat) < sum(post_2.attack_base_stat):
+    #      return render_template('battle_winner.html', post=post, post_2= post_2)
+    # else:
+    #     return redirect(url_for('poke_blue.view_posts'))
+
+
+
+    # return render_template('battle_winner.html', post=post, user=user)
+
+    
+    
+    
+    # if sum(user.defense_base_stat) < sum(post.attack_base_stat):
+    #     return render_template('battle_winner.html', post=post, user=user)
+    # else:
+    #     return redirect(url_for('poke_blue.view_posts'))
+
+
+    
+   
+   
+   
+   
+#    if user and sum(post.defense_base_stat) < sum(post_2.attack_base_stat):
+   
+#     else:
+#         return redirect(url_for('poke_blue.view_posts'))
     
 
 

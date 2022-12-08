@@ -14,6 +14,6 @@
   </div>
   {% endfor%}
 <div class="battle_button">
-<a href="#" class="btn btn-danger" href="/attack/{{user_id}}/battle">Battle {{user.first_name.title()}}</a>
+<a href="/attack/{{user.id}}/results" class="btn btn-danger">Battle {{user.first_name.title()}}</a>
 </div>
 {% endblock %}

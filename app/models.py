@@ -18,6 +18,7 @@ class User(db.Model, UserMixin):
     last_name= db.Column(db.String(50), nullable=False, unique=True)
     email= db.Column(db.String(250), nullable=False, unique=True)
     password= db.Column(db.String(250), nullable=False)
+    wins = db.Column(db.Integer)
     post= db.relationship('Post', backref='Author', lazy=True)
     battled = db.relationship('User',
         primaryjoin= (battlers.columns.battler_id==id),
@@ -28,11 +29,12 @@ class User(db.Model, UserMixin):
     )
 
 
-    def __init__(self, first_name, last_name, email, password):
+    def __init__(self, first_name, last_name, email, password, wins):
         self.first_name = first_name
         self.last_name= last_name
         self.email = email
         self.password= generate_password_hash(password)
+        self.wins= wins
 
     def save_to_db(self):
         db.session.add(self)
